@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+<meta name="author" content="Magewell Electronics Co., Ltd."/>
+<style>
+.td{width:120px;word-break:break-all}
+</style>
+</head>
+<body>
+
+<style>
+    .td1{width:600px;word-break:break-all}
+</style>
+
+<h1 id="magewellprocapture系列采集卡">Magewell Pro Capture 系列采集卡</h1>
+
+<h1 id="快速使用指南forlinux">快速使用指南 for Linux</h1>
+
+<p>版权所有 2011&#8211;2016 <a href="http://www.magewell.com">南京美乐威电子科技有限公司</a> 保留所有权利。</p>
+
+<p>最后更新时间 2016&#8211;04&#8211;19</p>
+
+<h2 id="1简介">1 简介</h2>
+
+<p>美乐威 ProCapture 系列采集卡可应用于各种类型高标清音视频信号的采集，目前已经全面支持 PCI-E 2.0 标准. </p>
+
+<p>全系产品采用模块化设计，能快速满足特殊定制需求，提供统一的驱动及 SDK ，较前一代产品，在功能、性能、</p>
+
+<p>易用性及兼容性方面都得到了全面的提升.</p>
+
+<h2 id="2产品安装">2 产品安装</h2>
+
+<ul>
+<li><p>关闭计算机电源;</p></li>
+<li><p>将Pro Capture采集卡插入到计算机PCI Express插槽中(注:Pro Capture系列采集卡PCI-E接口目前有2种:x1与x4. </p>
+
+<p>x1卡可以插入主板PCI Express x1,x4,x8或x16插槽, x4卡可以插入主板PCI Express x4,x8或x16插槽,另外Pro </p>
+
+<p>Capture Mini卡只能挺插入主板的Mini PCI-E槽);</p></li>
+<li><p>开启计算机电源，启动操作系统;</p></li>
+</ul>
+
+<h2 id="3驱动安装">3 驱动安装</h2>
+
+<h3 id="3.1驱动安装简介">3.1 驱动安装简介</h3>
+
+<p>本节主要介绍如何在 linux 系统环境下安装 Pro Capture 系列采集卡的驱动程序.</p>
+
+<h3 id="3.2驱动安装">3.2 驱动安装</h3>
+
+<ul>
+<li><p>下载驱动程序安装包 ProCaptureForLinux_XXXX.tar.gz。其中 XXXX 表示下载驱动的版本号。</p></li>
+<li><p>输入命令：tar -zxvf ProCaptureForLinux_XXXX.tar.gz 将驱动解压到当前目录。</p></li>
+<li><p>解压后包括如下目录和文件：</p>
+
+<ul>
+<li><p>bin：bin 目录中包含了一些常用工具软件，通过这些软件可以方便的获得采集卡当前各类状态信息。</p></li>
+<li><p>scripts： scripts 目录中包含了安装、卸载、修复驱动的脚本及系统配置文件。</p></li>
+<li><p>src：src 目录中包含了驱动程序的源码。</p></li>
+<li><p>install.sh：执行该文件即可调用 scripts 目录的中的脚本自动安装驱动程序。</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-driver-struct.png" alt="" />
+</figure></li>
+<li><p>安装内核开发包：安装驱动之前，必须先安装内核开发包，否则安装驱动将失败。 </p>
+
+<ul>
+<li><p>Ubuntu：sudo apt-get install linux-headers-`uname -r` </p></li>
+<li><p>Fedora、CentOS、RHEL: sudo yum install kernel-devel</p></li>
+</ul></li>
+<li><p>执行当前目录下 install.sh 文件，安装驱动。如果驱动安装成功，将会出现如下提示信息</p>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-install-succ.png" alt="" />
+</figure></li>
+<li><p>验证 mwcap-info 是否正确安装</p>
+
+<ul>
+<li>mwcap-info 是随驱动程序同时安装的命令行工具，通过该软件可以获取采集卡当前状态信息，并且该</li>
+</ul>
+
+<p>工具提供了可供脚本使用的选项。</p>
+
+<ul>
+<li>输入命令 mwcap-info -h 如果工具安装成功，则会打印出帮助信息。</li>
+</ul></li>
+<li><p>验证采集卡是否被正确驱动</p>
+
+<ul>
+<li>输入命令 mwcap-info -l 输入该命令后，如果设备被正常驱动，将列出当前机器上所有 Pro Capture</li>
+</ul>
+
+<p>采集卡</p>
+
+<ul>
+<li>输入命令 gst-launch&#8211;1.0 v4l2src device=/dev/video0 ! video/x-raw,width=720,height=576,</li>
+</ul>
+
+<p>format=RGBx,framerate=30/1 ! videoconvert ! autovideosink</p>
+
+<p>如果驱动工作正常，则能够正常的显示音视频画面。</p>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-mplayer.png" alt="" />
+</figure></li>
+</ul>
+
+<h2 id="4工具软件">4 工具软件</h2>
+
+<p>本节主要介绍如何使用 Linux 平台下常用的工具软件</p>
+
+<p>Pro Capture 系列视频采集卡采用模块化设计，采集卡上每一个采集通道均可以看成一个独立的视频采集设备。</p>
+
+<p>本文中所有的“视频采集设备”均表示采集卡上的一个采集通道，“视频采集卡”表示整块采集卡。</p>
+
+<p>一个视频采集设备有两种表示方法</p>
+
+<ul>
+<li><p>1 用一个 V4L2 设备文件表示一个视频采集设备(eg. /dev/video0)。</p></li>
+<li><p>2 用设备 ID（Board-ID:Channel-ID，eg. 0:0）的方式表示一个视频采集设备。其中 Board-ID 表示设</p>
+
+<p>备所在采集卡拨码开关的数值，Channel-ID 表示该设备在采集卡上的索引。当一台 PC 上存在两块拨码开</p>
+
+<p>关一样的采集卡时，此方法表示的视频采集设备不唯一。</p></li>
+</ul>
+
+<h3 id="4.1mwcap-info">4.1 mwcap-info</h3>
+
+<blockquote>
+<p>mwcap-info 是 Linux 平台下的一个命令行工具，通过这个软件可以查询当前 PC 上工作的所有 Pro Capture </p>
+
+<p>视频采集设备，并且可以查询每一个设备的设备硬件信息、输入源信息、HDMI 信息帧以及设备文件名称。</p>
+
+<p>mwcap-info 命令行参数如下：
+<table class="l-wrap" border="1" frame="box" cellspacing="0">
+ <tr>
+ <th>参数</th>
+ <th>注释</th>
+ </tr>
+ <tr>
+ <td class="td">-h</td>
+ <td class="td1">显示帮助信息。</td>
+ </tr>
+ <tr>
+ <td class="td">-l</td>
+ <td class="td1">列表显示所有的视频采集设备。</td>
+ </tr>
+ <tr>
+ <td class="td">-q</td>
+ <td class="td1">该选项参数表示视频采集设备，列表显示指定设备的信息。</td>
+ </tr>
+ <tr>
+ <td class="td">-i or --info-all</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示指定设备的所有属性信息，包括输入源信息，设备硬件信息以及 HDMI 信息帧信息。</td>
+ </tr>
+ <tr>
+ <td class="td">--info-device</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示指定设备的硬件信息。</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-all</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示指定设备的所有输入源信息。</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-video</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示指定设备的视频输入源信息。</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-audio</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示指定设备的音频输入源信息。</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-specific</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示指定设备的与接口相关的信息。</td>
+ </tr>
+ <tr>
+ <td class="td">-v</td>
+ <td class="td1">该选项参数为设备 ID, 显示设备对应的 V4L2 设备文件名称，该选项可以嵌入在脚本中使用。</td>
+ </tr>
+ <tr>
+ <td class="td">-a or --alsa-name</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示设备对应的 ALSA 设备文件名称，该选项可以嵌入在脚本中使用。</td>
+ </tr>
+ <tr>
+ <td class="td">--alsa-name-mplayer</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示设备对应 mplayer 格式的 ALSA 设备文件名称，该选项可以嵌入在脚本中使用。</td>
+ </tr>
+ <tr>
+ <td class="td">--alsa-name-pa</td>
+ <td class="td1">该选项参数表示视频采集设备, 显示设备对应的 Paulse Audio 设备文件名称，该选项可以嵌入在脚本中使用。</td>
+ </tr>
+ <tr>
+ <td class="td">-c</td>
+ <td class="td1">该选项参数为一个设备 ID, 显示拥有此 ID 设备的数量，该选项可以嵌入在脚本中使用。</td>
+ </tr></p>
+</blockquote>
+
+<p></table></p>
+
+<ul>
+<li><p>Example：</p>
+
+<ul>
+<li><p>列表显示所有视频采集设备的信息。</p>
+
+<p>$ mwcap-info -l</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-list.png" alt="" />
+</figure>
+
+<ul>
+<li><p>列表显示指定视频采集设备的信息。</p>
+
+<p>$ mwcap-info -q /dev/video0 </p>
+
+<p>-- or -- </p>
+
+<p>$ mwcap-info -q 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-query.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示指定设备的所有属性信息，包括输入源信息，设备硬件信息以及。</p>
+
+<p>$ mwcap-info -i /dev/video0 </p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-all 0:0</p></li>
+<li><p>显示指定设备的硬件信息。</p>
+
+<p>$ mwcap-info --info-device /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-device 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-device.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示所有的输入源信息。</p>
+
+<p>$ mwcap-info --info-input-all /dev/video0 </p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-all 0:0</p></li>
+<li><p>显示视频的输入源信息。</p>
+
+<p>$ mwcap-info --info-input-video /dev/video</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-video 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-input-video.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示音频输入源信息。</p>
+
+<p>$ mwcap-info --info-input-audio /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-audio 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-input-audio.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示与接口相关输入源信息。</p>
+
+<p>$ mwcap-info --info-input-specific /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-specific 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-input-specific.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示指定设备的 V4L2 设备文件名称, 该选项可以嵌入脚本中使用。</p>
+
+<p>$ mwcap-info -v 0:0</p>
+
+<p>$ gst-launch&#8211;1.0 v4l2src device=`mwcap-info -v 0:0` ! video/x-raw,width=720,height=576,</p>
+
+<p>format=RGBx,framerate=30/1 ! videoconvert ! autovideosink</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-v4l2-name.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示指定设备的 ALSA 设备文件名称, 该选项可以嵌入脚本中使用。</p>
+
+<p>$ mwcap-info -a /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --alsa-name 0:0</p>
+
+<p>$ gst-launch&#8211;1.0 alsasrc device=`mwcap-info &#8211;alsa-name 0:0` ! &#8216;audio/x-raw,format=S16LE,rate=44100,channels=2&#8217; ! autoaudiosink</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-alsa-name.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示指定设备 Mplayer 格式的 ALSA 设备文件名称, 该选项可以嵌入脚本中使用。</p>
+
+<p>$ mwcap-info --alsa-name-mplayer /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --alsa-name-mplayer 0:0</p>
+
+<p>$ mplayer tv:// -tv driver=v4l2:device=/dev/video0:width=1280:height=720:outfmt=yuy2:</p>
+
+<p>alsa:adevice=`mwcap-info --alsa-name-mplayer /dev/video0`:forceaudio</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-mplayer-name.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示指定设备的 Pulse Audio 设备文件名称。</p>
+
+<p>$ mwcap-info --alsa-name-pa /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --alsa-name-pa 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-pulse-audio.png" alt="" />
+</figure>
+
+<ul>
+<li><p>显示拥有指定设备 ID 的设备数量</p>
+
+<p>$ mwcap-info -c 0:0</p></li>
+</ul></li>
+</ul>
+
+</body>
+</html>

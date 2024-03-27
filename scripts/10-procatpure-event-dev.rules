@@ -1,0 +1,1 @@
+KERNEL=="mw-event", SUBSYSTEM=="mwevent", MODE="0666"

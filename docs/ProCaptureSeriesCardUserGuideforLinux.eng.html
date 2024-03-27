@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+<meta name="author" content="Magewell Electronics Co., Ltd."/>
+</head>
+<body>
+
+<style>
+    .td{width:70px;word-break:break-all}
+</style>
+
+<style>
+    .td1{width:650px;word-break:break-all}
+</style>
+
+<h1 id="magewellprocapturefamilycard">Magewell Pro Capture Family Card</h1>
+
+<h1 id="quickuserguideforlinux">Quick User Guide for Linux</h1>
+
+<p>Copyright 2011&#8211;2016 <a href="http://www.magewell.com">Nanjing Magewell Electronics Co., Ltd.</a> All rights reserved. </p>
+
+<p>Revised 04/20/2016</p>
+
+<h2 id="1introduction">1 Introduction</h2>
+
+<p>Magewell Pro Capture Family cards are used for capturing different types of HD video &amp; audio signals.</p>
+
+<p>The PCIe input interface supports PCIe 2.0 standard. The Pro Capture Family cards adopt the modular design,</p>
+
+<p>so custom design can be quickly made to meet special requirement. The cards support a universal drive and </p>
+
+<p>a universal SDK. In terms of the function, performance, user experience and compatibility, Pro Capture Family</p>
+
+<p>has been much improved compared to the First Generation Devices.</p>
+
+<h2 id="2productinstall">2 Product Install</h2>
+
+<ul>
+<li><p>Turn off the power of the computer;</p></li>
+<li><p>Insert the Pro Capture card into the computer PCI Express Slot(Note:In Pro Capture Family Card, there are</p></li>
+</ul>
+
+<p>two kinds of PCIe Interface :x1 and x4. x1 cards can be inserted into x1,x4,x8 or x16 PCI Express slot on </p>
+
+<p>the motherboard ; x4 card can insert into x4, x8 or x16 PCI Express slot on the motherboard;Pro Capture </p>
+
+<p>Mini cards can only insert into the Mini PCIe slot, not the mSATA slot);</p>
+
+<h2 id="3driverinstall">3 Driver Install</h2>
+
+<h3 id="3.1driverinstallationintroduction">3.1 Driver Installation Introduction</h3>
+
+<p>This section mainly introduces how to install the driver of the Pro Capture Series Card on Linux.</p>
+
+<h3 id="3.2driverinstallation">3.2 Driver Installation</h3>
+
+<ul>
+<li><p>Download the driver installation package ProCaptureForLinux_XXXX.tar.gz. xxxx indicates the driver version num.</p></li>
+<li><p>Input commond: tar -zxvf ProCaptureForLinux_XXXX.tar.gz. Extract the Driver to the current directory</p></li>
+<li><p>The following directories and files are included in the Decompression packages:</p>
+
+<ul>
+<li><p>bin：bin Directory contains some active tool software. Using these software can easily access kinds of status infomation of the card.</p></li>
+<li><p>scripts： scripts Directory contains script and system configuration files that installation uninstall and repair of the driver.</p></li>
+<li><p>src：Src directory contains the source code of the driver.</p></li>
+<li><p>install.sh：The file will call script which in the scripts directory to automatically install dirver.</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-driver-struct.png" alt="" />
+</figure></li>
+<li><p>Install kernel development kit: You must first install the kernel develpment kit. Otherwise driver installation will fail.</p>
+
+<ul>
+<li><p>Ubuntu：sudo apt-get install linux-headers-`uname -r` </p></li>
+<li><p>Fedora、CentOS、RHEL: sudo yum install kernel-devel</p></li>
+</ul></li>
+<li><p>Call the install.sh of the current directory to install driver. If the dirver is installed successfully, the flollowing message will appear.</p>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-install-succ.png" alt="" />
+</figure></li>
+<li><p>Verify whether the mwcap-info is installed correctly.</p>
+
+<ul>
+<li>The commond line tool mwcap-info is installed at the same time as the dirver. It can get current status infomation of</li>
+</ul>
+
+<p>the card and provide options for scripting.</p>
+
+<ul>
+<li>Enter: mwcap-info -h If the tool is installed successfully, it will print out the help message.</li>
+</ul></li>
+<li><p>Verify whether the card is correctly driven</p>
+
+<ul>
+<li><p>Enter: mwcap-info -l If the device is correctly dirven, it will list all Pro Capture cards on the current machine.</p></li>
+<li><p>Enter: gst-launch&#8211;1.0 v4l2src device=/dev/video0 ! video/x-raw,width=720,height=576,</p></li>
+</ul>
+
+<p>format=RGBx,framerate=30/1 ! videoconvert ! autovideosink</p>
+
+<p>If dirver works correctly, it will be able to display video and audio images normally.</p>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-mplayer.png" alt="" />
+</figure></li>
+</ul>
+
+<h2 id="4toolkitsoftware">4 ToolKit software</h2>
+
+<p>This section mainly introduces how to use the common software on Linux.</p>
+
+<p>Pro Capture Series Card adopts modular design and all the capture channel on the card can be seen as an independent video capture device</p>
+
+<p>In this article, &#8220;Video Capture Devce&#8221; indicates a capture channel on the card, &#8220;Video Capture Card&#8221; indicates the whole card. </p>
+
+<p>A video capture device has two kinds of representation methods</p>
+
+<ul>
+<li><p>1 Using a v4l2 device file name represents a video capture device(eg. /dev/video0) </p></li>
+<li><p>2 Using device ID(Board-ID:Channel-ID, eg. 0:0) represents a video capture device. Board-ID represents the num of the dial</p></li>
+</ul>
+
+<p>switch on the video capture card, Channel-ID represents the index of the device on the card. If the two video capture cards </p>
+
+<p>have same dial switch num, the video capture device not the only one. </p>
+
+<h3 id="4.1mwcap-info">4.1 mwcap-info</h3>
+
+<blockquote>
+<p>mwcap-info is a commond line tool on Linux. It can get all Pro Capture series devices on the current PC and the infomation </p>
+</blockquote>
+
+<pre><code>about the hardware, input source, hdmi frames and file name of the device.
+</code></pre>
+
+<blockquote>
+<p>mwcap-info has the following commond line parameters：
+<table class="l-wrap" border="1" frame="box" cellspacing="0">
+ <tr>
+ <th>NAME</th>
+ <th>ANNOTATION</th>
+ </tr>
+ <tr>
+ <td class="td">-h</td>
+ <td class="td1">Show help message.</td>
+ </tr>
+ <tr>
+ <td class="td">-l</td>
+ <td class="td1">List all video capture devices.</td>
+ </tr>
+ <tr>
+ <td class="td">-q</td>
+ <td class="td1">This parameter represents video capture device，list the information of the specified device.</td>
+ </tr>
+ <tr>
+ <td class="td">-i or --info-all</td>
+ <td class="td1">This parameter represents video capture device， list all the attribute information of the specified device, include input source, hardware, and hdmi frames.</td>
+ </tr>
+ <tr>
+ <td class="td">--info-device</td>
+ <td class="td1">This parameter represents video capture device， list hardware information of the specified device.</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-all</td>
+ <td class="td1">This parameter represents video capture device， list input source information of the specified device.</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-video</td>
+ <td class="td1">This parameter represents video capture device， list video input source information of the specified device.</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-audio</td>
+ <td class="td1">This parameter represents video capture device， list audio input source information of the specified device.</td>
+ </tr>
+ <tr>
+ <td class="td">--info-input-specific</td>
+ <td class="td1">This parameter represents video capture device， lsit information related to interface of the specified device.</td>
+ </tr>
+ <tr>
+ <td class="td">-v</td>
+ <td class="td1">This parameter represents a device ID， list the v4l2 file name of the device, the option can be used in the script.</td>
+ </tr>
+ <tr>
+ <td class="td">-a or --alsa-name</td>
+ <td class="td1">This parameter represents video capture device， list the alsa file name of the device, the option can be used in the script.</td>
+ </tr>
+ <tr>
+ <td class="td">--alsa-name-mplayer</td>
+ <td class="td1">This parameter represents video capture device， list the alsa file name of the device which format is mplayer, the option can be used in the script.</td>
+ </tr>
+ <tr>
+ <td class="td">--alsa-name-pa</td>
+ <td class="td1">This parameter represents video capture device， list the Paulse Audio file name of the device, the option can be used in the script.</td>
+ </tr>
+ <tr>
+ <td class="td">-c</td>
+ <td class="td1">This parameter represents a device ID, list the num of the device which have the ID, the option can be used in the script.</td>
+ </tr></p>
+</blockquote>
+
+<p></table></p>
+
+<ul>
+<li><p>Example：</p>
+
+<ul>
+<li><p>list all the video capture devices information.</p>
+
+<p>$ mwcap-info -l</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-list.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list the information of the specified video capture device.</p>
+
+<p>$ mwcap-info -q /dev/video0 </p>
+
+<p>-- or -- </p>
+
+<p>$ mwcap-info -q 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-query.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list the attribute information of the specified device, include input source, hardware.</p>
+
+<p>$ mwcap-info -i /dev/video0 </p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-all 0:0</p></li>
+<li><p>list the hardware information of the specified device.</p>
+
+<p>$ mwcap-info --info-device /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-device 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-device.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list all the input source information.</p>
+
+<p>$ mwcap-info --info-input-all /dev/video0 </p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-all 0:0</p></li>
+<li><p>list the video input source information.</p>
+
+<p>$ mwcap-info --info-input-video /dev/video</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-video 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-input-video.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list the audio input source information.</p>
+
+<p>$ mwcap-info --info-input-audio /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-audio 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-input-audio.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list input source information related to interface.</p>
+
+<p>$ mwcap-info --info-input-specific /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --info-input-specific 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-input-specific.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list v4l2 file name of the specified device, this option can be used in the script.</p>
+
+<p>$ mwcap-info -v 0:0</p>
+
+<p>$ gst-launch&#8211;1.0 v4l2src device=`mwcap-info -v 0:0` ! video/x-raw,width=720,height=576,</p>
+
+<p>format=RGBx,framerate=30/1 ! videoconvert ! autovideosink</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-v4l2-name.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list the alsa file name of the specified device, this option can be used in the script.</p>
+
+<p>$ mwcap-info -a /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --alsa-name 0:0</p>
+
+<p>$ gst-launch&#8211;1.0 alsasrc device=`mwcap-info &#8211;alsa-name 0:0` ! &#8216;audio/x-raw,format=S16LE,rate=44100,channels=2&#8217; ! autoaudiosink</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-alsa-name.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list the alsa file name of the specified device which the format is Mplayer, this option can be used in the script.</p>
+
+<p>$ mwcap-info --alsa-name-mplayer /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --alsa-name-mplayer 0:0</p>
+
+<p>$ mplayer tv:// -tv driver=v4l2:device=/dev/video0:width=1280:height=720:outfmt=yuy2:</p>
+
+<p>alsa:adevice=`mwcap-info --alsa-name-mplayer /dev/video0`:forceaudio</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-mplayer-name.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list Pulse Audio file name of the specified device.</p>
+
+<p>$ mwcap-info --alsa-name-pa /dev/video0</p>
+
+<p>-- or --</p>
+
+<p>$ mwcap-info --alsa-name-pa 0:0</p></li>
+</ul>
+
+<figure>
+<img src="./pic/user_guide_for_linux/mwcap-info/mwcap-info-pulse-audio.png" alt="" />
+</figure>
+
+<ul>
+<li><p>list the device num of the specified device ID.</p>
+
+<p>$ mwcap-info -c 0:0</p></li>
+</ul></li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+
+What's here
+===========
+Quick start with the official Pro Capture Series Card Driver on Linux.
+
+
+Install
+===========
+Open a terminal then execute the installation script:
+	$ cd <path-to-package-base-directory>
+	$ ./install.sh
+  
+After a successful installation, you should see something similar to:
+
+#########################################################
+Install Successfully!
+#########################################################
+
+If you get an unexpected failure when executing the installation script,
+consult the documents under docs directory for more help.
+
+
+Device info
+===========
+To get information of Pro Capture Card device, you can execute:
+	$ mwcap-info
+
+Set device
+===========
+To set properties of Pro Capture Card device, you can execute:
+	$ mwcap-control
+
+Play with MPlayer(MPlayer must already be installed)
+===========
+After a successful driver installation, you can start a capture using MPlayer:
+	$ mplayer tv:// -tv driver=v4l2
+
