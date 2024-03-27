@@ -155,7 +155,7 @@ int mw_event_dev_create(void)
 
     g_dev.c_major = MAJOR(dev_id);
 
-    g_dev.c_class = class_create(THIS_MODULE, MW_EVENT_NAME);
+    g_dev.c_class = class_create(MW_EVENT_NAME);
     if (IS_ERR(g_dev.c_class)) {
         ret = PTR_ERR(g_dev.c_class);
         g_dev.c_class = NULL;

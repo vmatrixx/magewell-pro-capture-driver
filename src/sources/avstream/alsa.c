@@ -698,11 +698,7 @@ static int alsa_create_pcm(struct snd_card *card, xi_card_driver *drv, char *dri
     snd_pcm_lib_preallocate_pages_for_all(
             pcm,
             SNDRV_DMA_TYPE_CONTINUOUS,
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,1,0))
-			card->dev,
-#else
-            snd_dma_continuous_data(GFP_KERNEL),
-#endif
+            card->dev,
             audio_pcm_hardware.buffer_bytes_max,
             audio_pcm_hardware.buffer_bytes_max
             );
